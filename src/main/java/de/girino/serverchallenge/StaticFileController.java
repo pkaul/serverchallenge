@@ -68,9 +68,15 @@ class StaticFileController extends WebMvcConfigurerAdapter {
      * issues with large files. See https://jira.spring.io/browse/SPR-10855.
      * </li>
      * <li>
-     * If-Match is not supported
+     * If-Match is NOT supported
      * </li>
      * </ul>
+     *
+     * In order to avoid these limitations, another implementation might created that does not require to stream the
+     * entire response body for building the ETag. This can be achieved when using (weaker) attributes such as
+     * "file size" or "modification date" when building the ETag.
+     * On the other hand, a proper support for "Last-Modified" with "If-Modified-Since" should be sufficient to
+     * make content delivery more efficient so that a proper support for ETags probably does not add much benefit.
      */
     @Bean
     public Filter shallowEtagHeaderFilter() {

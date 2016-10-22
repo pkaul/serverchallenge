@@ -15,9 +15,10 @@
 ## Design & Considerations
 In order to solve this challenge, [Spring Boot](https://projects.spring.io/spring-boot/) with an underlying 
 [Apache Tomcat](http://tomcat.apache.org/) servlet container have been used. These provide prefabricated solutions for
-common HTTP server related requirements.
+common HTTP server related requirements. Overall design consideration was to use as much existing and proven code as possible
+in order to prevent re-inventing the wheel. 
 
-Thus, my efforts for solving this challenge where mostly related to setting up and wiring standard components similiar to
+Thus, my efforts for solving this challenge where mostly related to setting up and wiring standard components similar to
 what is described in [Spring Boot's getting started](https://spring.io/guides/gs/spring-boot/).
 Anyway, not all requirements couldn't be been solved using out-of-the-box code, such as the directory listing functionality. 
 Therefore a few custom implementations needed to be created and incorporated into this application.
@@ -25,24 +26,27 @@ Therefore a few custom implementations needed to be created and incorporated int
 This is how individual requirements are solved
 
 * _Multi-threaded http server with thread pooling_: Apache Tomcat is an enterprise-ready servlet engine that comes with out-of-the-box multi threading and thread pooling.
+    See [tomcat documentation](http://tomcat.apache.org/tomcat-8.0-doc/config/executor.html) for more details.
 * _Executable JAR file_: Spring Boot supports generating a single executable JAR file including all necessary dependencies. See below for how to build and run the JAR exactly.
 * _GET and HEAD handling_: Spring Boot's in-built [ResourceHttpRequestHandler](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/resource/ResourceHttpRequestHandler.html) 
-    is used for serving static files via HTTP from a configured location. This includes most parts of HTTP specification, e.g. handling of certain headers. 
+    is used for serving static files via HTTP from a configured location. This includes fulfilling of important parts of HTTP specification, e.g. handling of certain headers. 
+    In addition, this handler is designed for high performance (and low disk I/O) e.g. by making use of in-memory caching of resources.
 * _Directory listing_: This is done by a custom implementation of [ResourceResolver](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/resource/ResourceResolver.html) 
     interface (see [DirectoryListingResourceResolver](./src/main/java/de/girino/serverchallenge/DirectoryListingResourceResolver.java))
     where a directory is internally translated into a HTML page. In addition, a little tweak has been added to make sure 
-    that `ResourceHttpRequestHandler` also accepts requests for the base directory. See [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java)
+    that `ResourceHttpRequestHandler` also accepts requests for the base directory itself. See [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java)
     for more details.
 * _If-Modified-Since_: Proper handling of conditional requests based on modification time is already included in above mentioned `ResourceHttpRequestHandler`
 * _ETag, If-Match and If-Non-Match_: This is handled by [ShallowEtagHeaderFilter](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/filter/ShallowEtagHeaderFilter.html). 
-    Note that this implementation has some limitations that are described in [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java) 
+    Note that this implementation has some limitations (e.g. regarding memory usage and spec compliance) that are mentioned in [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java) in more detail. 
 * _HTTP/1.1 keep-alive_: Apache Tomcat supports both HTTP/1.0 and HTTP/1.1 fully and is therefore able to properly handle 
   keep-alive behaviour according to its specification. See [documentation](https://tomcat.apache.org/tomcat-8.0-doc/config/http.html#HTTP/1.1_and_HTTP/1.0_Support) for more details. 
 
 
-Assumptions
-* The resulting server will be executed on local workstations only and will not exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered.
-* File size does not exceed 1 MB.
+Additional Assumptions
+* The resulting server will be executed on local workstations only and will not exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered here.
+* Purpose of this server is to serve a small website having small files only rather than serving large files (such as large video files). 
+   Therefore total size of all files as well as the size of a single file does not exceed a few MBs.   
 
 
 ## Project Directory Layout
