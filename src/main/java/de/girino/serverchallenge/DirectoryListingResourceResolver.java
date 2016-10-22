@@ -80,7 +80,7 @@ class DirectoryListingResourceResolver implements ResourceResolver {
         } else {
 
             result.append("<ul>");
-            for (File file : directory.listFiles()) {
+            for (File file : files) {
 
                 String name = HtmlUtils.htmlEscape(file.getName());
                 String trailingSlash = file.isDirectory() ? "/" : "";
