@@ -21,7 +21,7 @@ import java.io.File;
  * A (pseudo-) controller for serving static files from a given base directory. This implementation mainly
  * sets up an {@link org.springframework.web.servlet.resource.ResourceHttpRequestHandler} that already
  * deals with lots of HTTP specific requirements.
- *
+ * <p>
  * See https://spring.io/blog/2014/07/24/spring-framework-4-1-handling-static-web-resources for an overview
  */
 @Controller
@@ -35,10 +35,10 @@ class StaticFileController extends WebMvcConfigurerAdapter {
     private static final String URI_PATTERN = "/**";
 
     /**
-   	 * Base dir of static files (will be mapped from application.properties or system property)
-   	 */
-   	@Value("${documentroot}")
-   	String baseDir;
+     * Base dir of static files (will be mapped from application.properties or system property)
+     */
+    @Value("${documentroot}")
+    String baseDir;
 
 
     /**
@@ -62,19 +62,19 @@ class StaticFileController extends WebMvcConfigurerAdapter {
      * Enabling ETag (in general).
      * Note that this ETag implementation has some limitations:
      * <ul>
-     *     <li>{@link ShallowEtagHeaderFilter only saves bandwidth, not server performance}</li>
-     *     <li>
-     *         Since content will be loaded in the main memory in order to compute the ETag hash, this implementation has
-     *         issues with large files. See https://jira.spring.io/browse/SPR-10855.
-     *     </li>
-     *     <li>
-     *         If-Match is not supported
-     *     </li>
+     * <li>{@link ShallowEtagHeaderFilter only saves bandwidth, not server performance}</li>
+     * <li>
+     * Since content will be loaded in the main memory in order to compute the ETag hash, this implementation has
+     * issues with large files. See https://jira.spring.io/browse/SPR-10855.
+     * </li>
+     * <li>
+     * If-Match is not supported
+     * </li>
      * </ul>
      */
     @Bean
     public Filter shallowEtagHeaderFilter() {
-      return new ShallowEtagHeaderFilter();
+        return new ShallowEtagHeaderFilter();
     }
 
 
@@ -92,7 +92,7 @@ class StaticFileController extends WebMvcConfigurerAdapter {
 
                 // if path is empty -> replace by slash
                 String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-                if( path != null && path.length() == 0 ) {
+                if (path != null && path.length() == 0) {
                     request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "/");
                 }
                 return true;
@@ -107,7 +107,7 @@ class StaticFileController extends WebMvcConfigurerAdapter {
      * is necessary for above's ResourceHandlerRegistration to be working properly
      */
     private String normalizeDirectory(String directory) {
-        return directory.replace(File.pathSeparatorChar, '/')+(directory.endsWith("/") ? "" : "/");
+        return directory.replace(File.pathSeparatorChar, '/') + (directory.endsWith("/") ? "" : "/");
     }
 
 }

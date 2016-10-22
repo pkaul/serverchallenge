@@ -66,40 +66,39 @@ class DirectoryListingResourceResolver implements ResourceResolver {
     }
 
     /**
-      * Building HTML for a given directory.
-       */
-     private static String buildHTML(File directory) {
+     * Building HTML for a given directory.
+     */
+    private static String buildHTML(File directory) {
 
-         // using plain string builder here but a more fancy solution might use templating (e.g. Freemarker) here.
-         StringBuilder result = new StringBuilder();
-         result.append("<html><body>");
+        // using plain string builder here but a more fancy solution might use templating (e.g. Freemarker) here.
+        StringBuilder result = new StringBuilder();
+        result.append("<html><body>");
 
-         File[] files = directory.listFiles();
-         if (files == null || files.length == 0 ) {
-             result.append("<p>empty directory</p>");
-         }
-         else {
+        File[] files = directory.listFiles();
+        if (files == null || files.length == 0) {
+            result.append("<p>empty directory</p>");
+        } else {
 
-             result.append("<ul>");
-             for (File file : directory.listFiles()) {
+            result.append("<ul>");
+            for (File file : directory.listFiles()) {
 
-                 String name = HtmlUtils.htmlEscape(file.getName());
-                 String trailingSlash = file.isDirectory() ? "/" : "";
+                String name = HtmlUtils.htmlEscape(file.getName());
+                String trailingSlash = file.isDirectory() ? "/" : "";
 
-                 result.append(String.format("<li><a href=\"./%s%s\">%s%s</a></li>", name, trailingSlash, name, trailingSlash));
-             }
-             result.append("</ul>");
-         }
+                result.append(String.format("<li><a href=\"./%s%s\">%s%s</a></li>", name, trailingSlash, name, trailingSlash));
+            }
+            result.append("</ul>");
+        }
 
-         result.append("</body></html>");
-         return result.toString();
-     }
+        result.append("</body></html>");
+        return result.toString();
+    }
 
     // =============================
 
     /**
      * Encapsulates an existing directory (represented as {@link Resource} or {@link AbstractFileResolvingResource} respectively)
-     *  as a HTML Resource containing directory links.
+     * as a HTML Resource containing directory links.
      */
     private static class DirectoryListingResource implements Resource {
 
