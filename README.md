@@ -20,7 +20,7 @@ common HTTP server related requirements.
 Thus, my efforts for solving this challenge where mostly related to setting up and wiring standard components similiar to
 what is described in [Spring Boot's getting started](https://spring.io/guides/gs/spring-boot/).
 Anyway, not all requirements couldn't be been solved using out-of-the-box code, such as the directory listing functionality. 
-Thus, some custom implementations needed to be created and incorporated into the application.
+Therefore a few custom implementations needed to be created and incorporated into this application.
 
 This is how single requirements are solved
 
@@ -40,11 +40,9 @@ This is how single requirements are solved
   keep-alive behaviour according to its specification. See [documentation](https://tomcat.apache.org/tomcat-8.0-doc/config/http.html#HTTP/1.1_and_HTTP/1.0_Support) for more details. 
 
 
-   * See [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java) for more details
-
-
 Assumptions
-* The resulting server will not be running in a production environment. Thus, security  does not need to be considered.
+* The resulting server will be executed on local workstations only and will not exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered.
+* File size does not exceed 1 MB.
 
 
 ## Project Directory Layout
@@ -82,3 +80,7 @@ or
     java -jar target/server.jar --documentroot=file:C:/absolute/path/to/project/src/main/resources/META-INF/resources/examplefiles
 
 where `documentroot` option is a directory in the local filesystem. Note that prefix `file:` is required!
+
+Files can be accessed via
+
+    http://localhost:8080/
