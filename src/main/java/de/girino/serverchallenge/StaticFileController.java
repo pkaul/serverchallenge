@@ -64,8 +64,11 @@ class StaticFileController extends WebMvcConfigurerAdapter {
      * <ul>
      *     <li>{@link ShallowEtagHeaderFilter only saves bandwidth, not server performance}</li>
      *     <li>
-     *         Since content will be loaded in the main memory in order to compute the ETag hash, this implementation will
-     *         have issues with large files. See https://jira.spring.io/browse/SPR-10855.
+     *         Since content will be loaded in the main memory in order to compute the ETag hash, this implementation has
+     *         issues with large files. See https://jira.spring.io/browse/SPR-10855.
+     *     </li>
+     *     <li>
+     *         If-Match is not supported
      *     </li>
      * </ul>
      */
