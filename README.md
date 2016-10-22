@@ -22,7 +22,7 @@ what is described in [Spring Boot's getting started](https://spring.io/guides/gs
 Anyway, not all requirements couldn't be been solved using out-of-the-box code, such as the directory listing functionality. 
 Therefore a few custom implementations needed to be created and incorporated into this application.
 
-This is how single requirements are solved
+This is how individual requirements are solved
 
 * _Multi-threaded http server with thread pooling_: Apache Tomcat is an enterprise-ready servlet engine that comes with out-of-the-box multi threading and thread pooling.
 * _Executable JAR file_: Spring Boot supports generating a single executable JAR file including all necessary dependencies. See below for how to build and run the JAR exactly.
