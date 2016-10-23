@@ -38,7 +38,7 @@ class DirectoryListingResourceResolver implements ResourceResolver {
                 resource = location.createRelative(requestPath);
                 if (isDirectory(resource)) {
                     // it's a directory! Return a pseudo resource that represents the directory listing.
-                    return new DirectoryListingResource(resource);
+                    return new DirectoryListingHtmlResource(resource);
                 }
             } catch (IOException e) {
                 // Nothing more to do here. ignore.
@@ -98,14 +98,14 @@ class DirectoryListingResourceResolver implements ResourceResolver {
 
     /**
      * Encapsulates an existing directory (represented as {@link Resource} or {@link AbstractFileResolvingResource} respectively)
-     * as a HTML Resource containing directory links.
+     * and represents it as a HTML page containing directory's files as links.
      */
-    private static class DirectoryListingResource implements Resource {
+    private static class DirectoryListingHtmlResource implements Resource {
 
         private static final String ENCODING = "UTF-8";
         private final Resource delegate;
 
-        public DirectoryListingResource(Resource resource) {
+        public DirectoryListingHtmlResource(Resource resource) {
             this.delegate = resource;
         }
 
