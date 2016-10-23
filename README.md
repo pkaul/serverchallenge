@@ -38,16 +38,13 @@ This is how individual requirements are solved
     for more details.
 * _If-Modified-Since_: Proper handling of conditional requests based on modification time is already included in above mentioned `ResourceHttpRequestHandler`
 * _ETag, If-Match and If-Non-Match_: This is handled by [ShallowEtagHeaderFilter](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/filter/ShallowEtagHeaderFilter.html). 
-    Note that this implementation has some limitations (e.g. regarding memory usage and spec compliance) that are mentioned in [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java) in more detail. 
+    Note that this implementation has some limitations (e.g. regarding memory usage and spec compliance) that are described in [StaticFileController](./src/main/java/de/girino/serverchallenge/StaticFileController.java) in more detail. 
 * _HTTP/1.1 keep-alive_: Apache Tomcat supports both HTTP/1.0 and HTTP/1.1 fully and is therefore able to properly handle 
   keep-alive behaviour according to its specification. See [documentation](https://tomcat.apache.org/tomcat-8.0-doc/config/http.html#HTTP/1.1_and_HTTP/1.0_Support) for more details. 
 
-
 Additional Assumptions
 * The resulting server will be executed on local workstations only and will not exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered here.
-* Purpose of this server is to serve a small website having small files only rather than serving large files (such as large video files). 
-   Therefore total size of all files as well as the size of a single file does not exceed a few MBs.   
-
+* Total size of all served files fits easily into JVM's heap space (a couple of MBs). No large files (such as videos) are going to be served by this implementation.
 
 ## Project Directory Layout
 
@@ -76,7 +73,7 @@ Resulting artifact can be found at `target/server.jar`
 
 ### Run
 
-Run the server like
+After building, the server can be started like
 
     java -jar target/server.jar --documentroot=file:./src/main/resources/META-INF/resources/examplefiles
 or
