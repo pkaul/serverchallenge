@@ -29,8 +29,8 @@ This is how individual requirements are solved
     See [tomcat documentation](http://tomcat.apache.org/tomcat-8.0-doc/config/executor.html) for more details.
 * _Executable JAR file_: Spring Boot supports generating a single executable JAR file including all necessary dependencies. See below for how to build and run the JAR exactly.
 * _GET and HEAD handling_: Spring Boot's in-built [ResourceHttpRequestHandler](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/resource/ResourceHttpRequestHandler.html) 
-    is used for serving static files via HTTP from a configured location. This includes fulfilling of important parts of HTTP specification, e.g. handling of certain headers. 
-    In addition, this handler is designed for high performance (and low disk I/O) e.g. by making use of in-memory caching of resources.
+    is used for serving static files via HTTP from a configurable local directory while fulfilling the HTTP specification. 
+    In addition, this handler internally makes use of in-memory caching of resources and is therefore most likely suitable for high performance (and low disk I/O) delivery. 
 * _Directory listing_: This is done by a custom implementation of [ResourceResolver](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/resource/ResourceResolver.html) 
     interface (see [DirectoryListingResourceResolver](./src/main/java/de/girino/serverchallenge/DirectoryListingResourceResolver.java))
     where a directory is internally translated into a HTML page. In addition, a little tweak has been added to make sure 
@@ -43,7 +43,7 @@ This is how individual requirements are solved
   keep-alive behaviour according to its specification. See [documentation](https://tomcat.apache.org/tomcat-8.0-doc/config/http.html#HTTP/1.1_and_HTTP/1.0_Support) for more details. 
 
 Additional Assumptions
-* The resulting server will be executed on local workstations only and will not exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered here.
+* The resulting server will be executed on local workstations only and will not be exposed to the internet. Thus, security (e.g. protecting resources) does not need to be considered here.
 * Total size of all served files fits easily into JVM's heap space (a couple of MBs). No large files (such as videos) are going to be served by this implementation.
 
 ## Project Directory Layout
